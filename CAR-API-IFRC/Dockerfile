@@ -7,8 +7,7 @@ LABEL org.opencontainers.image.description="OpenHEXA Jupyter Notebook image with
 LABEL org.opencontainers.image.licenses=MIT
 
 USER root
-
-# Add after the other system libraries block (as root)
+# Install system dependencies
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && apt-get install -y \
@@ -28,7 +27,7 @@ RUN wget https://quarto.org/download/latest/quarto-linux-amd64.deb \
     && rm quarto-linux-amd64.deb
 
 USER ${NB_UID}
-RUN conda install --yes -c R -c conda-forge \
+RUN conda install --yes -c conda-forge \
     r-arrow=18.1.* \
     r-irkernel=1.3.* \
     r-tidyverse \
