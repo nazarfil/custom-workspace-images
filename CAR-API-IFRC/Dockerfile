@@ -11,12 +11,16 @@ USER root
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && apt-get install -y \
-    chromium-browser \
-    chromium-driver \
     fonts-liberation \
+    wget \ 
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+apt-get install -y wget gnupg ca-certificates && \
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+apt-get install -y ./google-chrome-stable_current_amd64.deb || apt-get -f install -y && \
+rm google-chrome-stable_current_amd64.deb
 # Set CHROMOTE_CHROME path for pagedown
 ENV CHROMOTE_CHROME=/usr/bin/chromium-browser
 
